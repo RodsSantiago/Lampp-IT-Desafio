@@ -24,55 +24,48 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.dscatalog.dscatalog.dto.CompanyDTO;
-import com.dscatalog.dscatalog.services.CompanyService;
+import com.dscatalog.dscatalog.dto.DeliveryPersonDTO;
+import com.dscatalog.dscatalog.dto.DeliveryPersonInsertDTO;
+import com.dscatalog.dscatalog.services.DeliveryPersonService;
 
 @RestController
-@RequestMapping(value = "/company")
-public class CompanyResource {
+@RequestMapping(value = "/deliveryPersons")
+public class DeliveryPersonResource {
 
 	@Autowired
-	private CompanyService service;
+	private DeliveryPersonService service;
 
 	// com paginacao
 	@GetMapping
-	public ResponseEntity<Page<CompanyDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<DeliveryPersonDTO>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
-			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy) {
+			@RequestParam(value = "orderBy", defaultValue = "firstName") String orderBy) {
 
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-		Page<CompanyDTO> list = service.findAllPaged(pageRequest);
+		Page<DeliveryPersonDTO> list = service.findAllPaged(pageRequest);
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<CompanyDTO> findById(@PathVariable Long id) {
-		CompanyDTO dto = service.findById(id);
+	public ResponseEntity<DeliveryPersonDTO> findById(@PathVariable Long id) {
+		DeliveryPersonDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto);
 
 	}
-	
-	
-	//com product
-	@GetMapping("/wProduct")
-    public ResponseEntity<List<CompanyDTO>> findWithProducts(){
-        List<CompanyDTO> list = service.findWithProducts();
-        return ResponseEntity.ok().body(list);
-    }
 
 	@PostMapping
-	public ResponseEntity<CompanyDTO> insert(@RequestBody CompanyDTO dto) {
-		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+	public ResponseEntity<DeliveryPersonDTO> insert(@RequestBody DeliveryPersonInsertDTO dto) {
+		DeliveryPersonDTO newDto = service.insert(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
 
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).body(newDto);
 
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CompanyDTO> update(@PathVariable Long id, @RequestBody CompanyDTO dto) {
+	public ResponseEntity<DeliveryPersonDTO> update(@PathVariable Long id, @RequestBody DeliveryPersonDTO dto) {
 		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 

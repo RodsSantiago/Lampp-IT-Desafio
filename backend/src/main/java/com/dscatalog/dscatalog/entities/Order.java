@@ -12,9 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
+/**
+ * @author rodri
+ *
+ */
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -34,6 +39,10 @@ public class Order implements Serializable {
     private OrderStatus status;
     private OrderPayment payment;
     private DeliveryType deliveryType;
+    
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @ManyToMany
     @JoinTable(name="tb_order_product",
@@ -127,7 +136,13 @@ public class Order implements Serializable {
 	public void setPayment(OrderPayment payment) {
 		this.payment = payment;
 	}
-    
-    
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
     
 }

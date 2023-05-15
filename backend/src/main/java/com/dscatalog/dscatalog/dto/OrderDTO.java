@@ -27,13 +27,16 @@ public class OrderDTO implements Serializable {
     private OrderStatus status;
     private OrderPayment payment;
     private DeliveryType deliveryType;
+    private String companyName;
+    
+    private CompanyDTO company;
 
     private List<ProductDTO> products = new ArrayList<>();
 
     public OrderDTO(){
     }
 
-    public OrderDTO(Long id, String address, Double latitude, Double longitude, Instant moment, OrderStatus status, OrderPayment payment, DeliveryType deliveryType) {
+    public OrderDTO(Long id, String address, Double latitude, Double longitude, Instant moment, OrderStatus status, OrderPayment payment, DeliveryType deliveryType, String companyName) {
         this.id = id;
         this.address = address;
         this.latitude = latitude;
@@ -42,6 +45,8 @@ public class OrderDTO implements Serializable {
         this.status = status;
         this.payment = payment;
         this.deliveryType = deliveryType;
+        this.companyName = company.getName();
+        	
     }
 
     public OrderDTO(Order entity) {
@@ -128,6 +133,16 @@ public class OrderDTO implements Serializable {
 	public void setDeliveryType(DeliveryType deliveryType) {
 		this.deliveryType = deliveryType;
 	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	
     
     
     

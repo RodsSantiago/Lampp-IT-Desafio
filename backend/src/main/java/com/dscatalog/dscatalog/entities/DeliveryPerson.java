@@ -1,11 +1,9 @@
 package com.dscatalog.dscatalog.entities;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,43 +15,45 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_company")
-public class Company implements Serializable {
+@Table(name = "tb_deliveryPerson")
+public class DeliveryPerson implements Serializable{
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	@Column(columnDefinition = "TEXT")
-	private String description;
-	private LocalTime openingTime;
-	private LocalTime closingTime;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_company_role",
-		joinColumns = @JoinColumn(name = "company_id"),
+	@JoinTable(name = "tb_deliveryPerson_role",
+		joinColumns = @JoinColumn(name = "deliveryPerson_id"),
 		inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
 	@ManyToMany
-    @JoinTable(name="tb_company_product",
-        joinColumns = @JoinColumn(name="company_id"),
+    @JoinTable(name="tb_deliveryPerson_product",
+        joinColumns = @JoinColumn(name="deliveryPerson_id"),
         inverseJoinColumns = @JoinColumn(name="product_id"))
     private Set<Product> products = new HashSet<>();
 	
-	public Company() {
+	public DeliveryPerson() {
 		
 	}
 
-	public Company(Long id, String name, String description, LocalTime openingTime, LocalTime closingTime) {
+	public DeliveryPerson(Long id, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.openingTime = openingTime;
-		this.closingTime = closingTime;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
 	}
 
 	public Long getId() {
@@ -64,36 +64,36 @@ public class Company implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public LocalTime getOpeningTime() {
-		return openingTime;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setOpeningTime(LocalTime openingTime) {
-		this.openingTime = openingTime;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public LocalTime getClosingTime() {
-		return closingTime;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setClosingTime(LocalTime closingTime) {
-		this.closingTime = closingTime;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Set<Role> getRoles() {
@@ -120,7 +120,7 @@ public class Company implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Company other = (Company) obj;
+		DeliveryPerson other = (DeliveryPerson) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -128,6 +128,5 @@ public class Company implements Serializable {
 			return false;
 		return true;
 	}
-	
 
 }

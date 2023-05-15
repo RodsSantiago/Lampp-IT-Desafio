@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dscatalog.dscatalog.services.exceptions.CompanyClosedException;
+import com.dscatalog.dscatalog.services.exceptions.CompanyNotFoundException;
 import com.dscatalog.dscatalog.services.exceptions.DataBaseException;
 import com.dscatalog.dscatalog.services.exceptions.DeliveryTypeWrongEnumException;
+import com.dscatalog.dscatalog.services.exceptions.OrderPaymentWrongEnumException;
 import com.dscatalog.dscatalog.services.exceptions.OrderWithoutProductsException;
 import com.dscatalog.dscatalog.services.exceptions.ResourceNotFoundException;
 
@@ -61,5 +64,39 @@ public class ResourceExceptionHandler {
 	    err.setPath(request.getRequestURI());
 	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
+	
+	@ExceptionHandler(CompanyNotFoundException.class)
+	public ResponseEntity<StandardError> CompanyNotFoundException(CompanyNotFoundException e, HttpServletRequest request) {
+	    StandardError err = new StandardError();
+	    err.setTimestamp(Instant.now());
+	    err.setStatus(HttpStatus.BAD_REQUEST.value());
+	    err.setError("Company not found");
+	    err.setMessage(e.getMessage());
+	    err.setPath(request.getRequestURI());
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(CompanyClosedException.class)
+	public ResponseEntity<StandardError> CompanyClosedException(CompanyClosedException e, HttpServletRequest request) {
+	    StandardError err = new StandardError();
+	    err.setTimestamp(Instant.now());
+	    err.setStatus(HttpStatus.BAD_REQUEST.value());
+	    err.setError("Opening Company time closed");
+	    err.setMessage(e.getMessage());
+	    err.setPath(request.getRequestURI());
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(OrderPaymentWrongEnumException.class)
+	public ResponseEntity<StandardError> orderPaymentWrongEnum(OrderPaymentWrongEnumException e, HttpServletRequest request) {
+	    StandardError err = new StandardError();
+	    err.setTimestamp(Instant.now());
+	    err.setStatus(HttpStatus.BAD_REQUEST.value());
+	    err.setError("Order Payment wrong value");
+	    err.setMessage(e.getMessage());
+	    err.setPath(request.getRequestURI());
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+
 
 }
